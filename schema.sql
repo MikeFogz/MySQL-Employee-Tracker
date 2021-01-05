@@ -11,3 +11,9 @@ CREATE TABLE employee (
   manager_id NULL,
   PRIMARY KEY (id)
 );
+
+CREATE TABLE department (
+  id INT PRIMARY KEY NOT NULL,
+  name VARCHAR(30) NULL,
+  PRIMARY KEY (id)
+);
