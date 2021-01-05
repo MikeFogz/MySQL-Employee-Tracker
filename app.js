@@ -8,8 +8,28 @@ const connection = mysql.createConnection({
   database: "employee_db",
 });
 
-// const start = () => {
-
+const start = () => {
+    inquirer
+    .prompt({
+      name: 'employeeAction',
+      type: 'list',
+      message: 'Would you like to [ADD], [VIEW], or [UPDATE] on an employee?',
+      choices: ['ADD', 'VIEW', 'UPDATE', 'EXIT'],
+    })
+    .then((answer) => {
+      // based on their answer, either call the bid or the post functions
+    if (answer.employeeAction === 'ADD') {
+        addEmployee();
+    } else if (answer.employeeAction === 'VIEW') {
+        viewEmployee();
+    } else if (answer.employeeAction === 'UPDATE') {
+        updateEmployee(); 
+    }else {
+        connection.end();
+        process.exit(0);
+      }
+    });
+};
 
 const addEmployee = () => {
     inquirer
