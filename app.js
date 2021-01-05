@@ -8,7 +8,7 @@ const connection = mysql.createConnection({
   database: "employee_db",
 });
 
-// const start
+// const start = () => {
 
 
 const addEmployee = () => {
@@ -35,6 +35,26 @@ const addEmployee = () => {
             message: `Who is their manager, if they have one?`,
         },  
         ])
+        .then((answer) => {
+            // when finished prompting, insert a new item into the db with that info
+            connection.query(
+            'INSERT INTO employee SET ?',
+              // QUESTION: What does the || 0 do?
+            {
+                first_name: answer.firstName,
+                last_name: answer.lastName,
+                role_id: answer.role,
+                manager_id: answer.manager
+            },
+            (err) => {
+                if (err) throw err;
+                console.log('Employee successfully added!');
+                // re-prompt the user for if they want to add, view, or update.
+                start();
+            }
+            );
+        });
+    };
 
 // const viewEmployee
 
