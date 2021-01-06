@@ -17,10 +17,8 @@ const start = () => {
     choices: [
         'Add an Employee',
         'View an Employee',
-        'Update an Employee',
         'Add a Department',
         'View a Department',
-        'Update a Department',
         'Add a Role', 
         'View a Role', 
         'Update a Role', 
@@ -32,31 +30,23 @@ const start = () => {
             addEmp();
             break;
 
-        case 'View an Employee':
+        case 'View Employees':
             viewEmp();
-            break;
-
-        case 'Update an Employee':
-            updateEmp(); 
             break;
 
         case 'Add a Department':
             addDep();
             break;
 
-        case 'View a Department':
+        case 'View Departments':
             viewDep();
-            break;
-
-        case 'Update a Department':
-            updateDep(); 
             break;
 
         case 'Add a Role':
             addRole();
             break;
 
-        case 'View a Role':
+        case 'View Roles':
             viewRole();
             break;
 
@@ -118,5 +108,6 @@ const addEmp = () => {
     };
 
 // const viewEmployee
+
 
 // const updateRole
