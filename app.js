@@ -1,37 +1,79 @@
 const mysql = require("mysql");
 const inquirer = require("inquirer");
 const connection = mysql.createConnection({
-  host: "localhost",
-  port: 3306,
-  user: "root",
-  password: "password",
-  database: "employee_db",
+host: "localhost",
+port: 3306,
+user: "root",
+password: "password",
+database: "employee_db",
 });
 
 const start = () => {
     inquirer
     .prompt({
-      name: 'employeeAction',
-      type: 'list',
-      message: 'Would you like to [ADD], [VIEW], or [UPDATE] on an employee?',
-      choices: ['ADD', 'VIEW', 'UPDATE', 'EXIT'],
+    name: 'trackerAction',
+    type: 'list',
+    message: 'What action would you like to take?',
+    choices: [
+        'Add an Employee',
+        'View an Employee',
+        'Update an Employee',
+        'Add a Department',
+        'View a Department',
+        'Update a Department',
+        'Add a Role', 
+        'View a Role', 
+        'Update a Role', 
+        'EXIT'],
     })
     .then((answer) => {
-      // based on their answer, either call the bid or the post functions
-    if (answer.employeeAction === 'ADD') {
-        addEmployee();
-    } else if (answer.employeeAction === 'VIEW') {
-        viewEmployee();
-    } else if (answer.employeeAction === 'UPDATE') {
-        updateEmployee(); 
-    }else {
-        connection.end();
-        process.exit(0);
-      }
+    switch (answer.trackerAction ) {
+        case 'Add an Employee':
+            addEmp();
+            break;
+
+        case 'View an Employee':
+            viewEmp();
+            break;
+
+        case 'Update an Employee':
+            updateEmp(); 
+            break;
+
+        case 'Add a Department':
+            addDep();
+            break;
+
+        case 'View a Department':
+            viewDep();
+            break;
+
+        case 'Update a Department':
+            updateDep(); 
+            break;
+
+        case 'Add a Role':
+            addRole();
+            break;
+
+        case 'View a Role':
+            viewRole();
+            break;
+
+        case 'Update a Role':
+            updateRole(); 
+            break;
+
+        default:
+            console.log(`Invalid action: ${answer.trackerAction}`);
+            break;
+    }
     });
 };
 
-const addEmployee = () => {
+start();
+
+const addEmp = () => {
     inquirer
     .prompt([
         { 
@@ -59,7 +101,6 @@ const addEmployee = () => {
             // when finished prompting, insert a new item into the db with that info
             connection.query(
             'INSERT INTO employee SET ?',
-              // QUESTION: What does the || 0 do?
             {
                 first_name: answer.firstName,
                 last_name: answer.lastName,
