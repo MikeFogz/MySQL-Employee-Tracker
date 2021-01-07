@@ -107,7 +107,48 @@ const addEmp = () => {
         });
     };
 
-// const viewEmployee
+const viewEmp = () => {
+    connection.query
+}
 
 
-// const updateRole
+const updateRole = () => {
+    connection.query('SELECT * FROM employee', (err, results) => {
+        if (err) throw err;
+        inquirer
+            .prompt([
+                {
+                    name: 'employee',
+                    type: 'rawlist',
+                    choices() {
+                        const employeeArray = [];
+                        results.forEach(({ last_name }) => {
+                            employeeArray.push(last_name);
+                        });
+                        return employeeArray;
+                    },
+                    message: "Which employee's role would you like to update?",
+                },
+                {
+                    name: 'role',
+                    type: 'input',
+                    message: 'What should their new role be?',
+                },
+            ])
+            .then((answer) => {
+                connection.query(
+                    'UPDATE employee WHERE ?',
+                    [
+                        {
+                            role_id: answer.role,
+                        },
+                    ],
+                    (error) => {
+                        if (error) throw err;
+                        console.log('Role successfully updated.');
+                        start();
+                    }
+                );
+                });
+            });
+};
