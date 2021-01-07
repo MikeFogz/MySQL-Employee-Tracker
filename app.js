@@ -67,6 +67,11 @@ const addEmp = () => {
     inquirer
     .prompt([
         { 
+            name: 'id',
+            type: 'input',
+            message: 'What is the ID # of the new employee?',
+        },
+        { 
             name: 'firstName',
             type: 'input',
             message: 'What is the first name of the new employee?',
@@ -92,6 +97,7 @@ const addEmp = () => {
             connection.query(
             'INSERT INTO employee SET ?',
             {
+                id: answer.id,
                 first_name: answer.firstName,
                 last_name: answer.lastName,
                 role_id: answer.role,
@@ -119,11 +125,17 @@ const addDep = () => {
             type: 'input',
             message: 'What is the new department called?',
         },
+        { 
+            name: 'id',
+            type: 'input',
+            message: 'What is the ID # of the new department?',
+        },
         ])
         .then((answer) => {
             connection.query(
             'INSERT INTO department SET ?',
             {
+                id: answer.id,
                 name: answer.name,
             },
             (err) => {
@@ -135,6 +147,49 @@ const addDep = () => {
         });
     };
 
+    const addRole = () => {
+        inquirer
+        .prompt([
+            { 
+                name: 'firstName',
+                type: 'input',
+                message: 'What is the first name of the new employee?',
+            },
+            {
+                name: 'lastName',
+                type: 'input',
+                message: 'What is the last name of the new employee?',
+            },
+            {
+                name: 'role',
+                type: 'input',
+                message: `What is the employee's role?`,
+            },
+            {
+                name: 'manager',
+                type: 'input',
+                message: `Who is their manager, if they have one?`,
+            },  
+            ])
+            .then((answer) => {
+                // when finished prompting, insert a new item into the db with that info
+                connection.query(
+                'INSERT INTO employee SET ?',
+                {
+                    first_name: answer.firstName,
+                    last_name: answer.lastName,
+                    role_id: answer.role,
+                    manager_id: answer.manager
+                },
+                (err) => {
+                    if (err) throw err;
+                    console.log('Employee successfully added!');
+                    // re-prompt the user for if they want to add, view, or update.
+                    start();
+                }
+                );
+            });
+        };
 
 const updateRole = () => {
     connection.query('SELECT * FROM employee', (err, results) => {
