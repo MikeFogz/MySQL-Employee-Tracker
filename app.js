@@ -152,6 +152,15 @@ const addDep = () => {
         });
     };
 
+    const viewDep = () => {
+        console.log('List of all current department. \n')
+        connection.query('SELECT * FROM department', (err, res) =>{
+            if (err) throw err;
+            console.log(res);
+            start();
+        });
+    };
+
     const addRole = () => {
         inquirer
         .prompt([
@@ -193,6 +202,15 @@ const addDep = () => {
                 );
             });
         };
+
+    const viewRole = () => {
+        console.log('List of all current role. \n')
+        connection.query('SELECT * FROM role', (err, res) =>{
+            if (err) throw err;
+            console.log(res);
+            start();
+        });
+    };
 
 const updateRole = () => {
     connection.query('SELECT * FROM employee', (err, results) => {
