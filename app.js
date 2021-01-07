@@ -111,6 +111,30 @@ const viewEmp = () => {
     connection.query
 }
 
+const addDep = () => {
+    inquirer
+    .prompt([
+        { 
+            name: 'name',
+            type: 'input',
+            message: 'What is the new department called?',
+        },
+        ])
+        .then((answer) => {
+            connection.query(
+            'INSERT INTO department SET ?',
+            {
+                name: answer.name,
+            },
+            (err) => {
+                if (err) throw err;
+                console.log('Department successfully added!');
+                start();
+            }
+            );
+        });
+    };
+
 
 const updateRole = () => {
     connection.query('SELECT * FROM employee', (err, results) => {
