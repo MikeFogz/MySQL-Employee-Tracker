@@ -114,8 +114,13 @@ const addEmp = () => {
     };
 
 const viewEmp = () => {
-    connection.query
-}
+    console.log('List of all current employees. \n')
+    connection.query('SELECT * FROM employee', (err, res) =>{
+        if (err) throw err;
+        console.log(res);
+        start();
+    });
+};
 
 const addDep = () => {
     inquirer
