@@ -100,7 +100,7 @@ const addEmp = () => {
             (err) => {
                 if (err) throw err;
                 console.log('Employee successfully added!');
-                // re-prompt the user for if they want to add, view, or update.
+
                 start();
             }
             );
@@ -111,7 +111,7 @@ const viewEmp = () => {
     console.log('List of all current employees. \n')
     connection.query('SELECT * FROM employee', (err, res) =>{
         if (err) throw err;
-        console.log(res);
+        console.table(res);
         start();
     });
 };
