@@ -16,11 +16,11 @@ const start = () => {
     message: 'What action would you like to take?',
     choices: [
         'Add an Employee',
-        'View an Employee',
+        'View Employees',
         'Add a Department',
-        'View a Department',
+        'View Departments',
         'Add a Role', 
-        'View a Role', 
+        'View Roles', 
         'Update a Role', 
         'EXIT'],
     })
@@ -67,11 +67,6 @@ const addEmp = () => {
     inquirer
     .prompt([
         { 
-            name: 'id',
-            type: 'input',
-            message: 'What is the ID # of the new employee?',
-        },
-        { 
             name: 'firstName',
             type: 'input',
             message: 'What is the first name of the new employee?',
@@ -97,7 +92,6 @@ const addEmp = () => {
             connection.query(
             'INSERT INTO employee SET ?',
             {
-                id: answer.id,
                 first_name: answer.firstName,
                 last_name: answer.lastName,
                 role_id: answer.role,
@@ -130,17 +124,12 @@ const addDep = () => {
             type: 'input',
             message: 'What is the new department called?',
         },
-        { 
-            name: 'id',
-            type: 'input',
-            message: 'What is the ID # of the new department?',
-        },
+
         ])
         .then((answer) => {
             connection.query(
             'INSERT INTO department SET ?',
             {
-                id: answer.id,
                 name: answer.name,
             },
             (err) => {
