@@ -1,11 +1,19 @@
 const mysql = require("mysql");
 const inquirer = require("inquirer");
+const figlet = require("figlet");
+
 const connection = mysql.createConnection({
 host: "localhost",
 port: 3306,
 user: "root",
 password: "password",
 database: "employee_db",
+});
+
+figlet('Employee Tracker!', async (err, transformed) => {
+    if (err) throw err;
+    console.log(transformed);
+    
 });
 
 const start = () => {
