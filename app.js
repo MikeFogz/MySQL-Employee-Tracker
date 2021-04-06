@@ -25,6 +25,7 @@ const start = () => {
     choices: [
         'Add an Employee',
         'View Employees',
+        'View Employees by Manager',
         'Add a Department',
         'View Departments',
         'Add a Role', 
@@ -40,6 +41,10 @@ const start = () => {
 
         case 'View Employees':
             viewEmp();
+            break;
+
+        case 'View Employees by Manager':
+            viewEmpByMgr();
             break;
 
         case 'Add a Department':
@@ -88,14 +93,14 @@ const addEmp = () => {
             message: 'What is the last name of the new employee?',
         },
         {
-            name: 'role',
+            name: 'roleId',
             type: 'input',
-            message: `What is the employee's role?`,
+            message: `What is the employee's role ID?`,
         },
         {
-            name: 'manager',
+            name: 'managerId',
             type: 'input',
-            message: `Who is their manager, if they have one?`,
+            message: `What is their manager's ID, if they have one?`,
         },  
         ])
         .then((answer) => {
@@ -105,8 +110,8 @@ const addEmp = () => {
             {
                 first_name: answer.firstName,
                 last_name: answer.lastName,
-                role_id: answer.role,
-                manager_id: answer.manager
+                role_id: answer.roleId,
+                manager_id: answer.managerId
             },
             (err) => {
                 if (err) throw err;
@@ -119,10 +124,37 @@ const addEmp = () => {
     };
 
 const viewEmp = () => {
-    console.log('List of all current employees. \n')
-    connection.query('SELECT * FROM employee', (err, res) =>{
+    let query =
+        "SELECT employee.id, employee.first_name, employee.last_name, role.title, role.salary, department.department_name AS department, concat(manager.first_name, ' ', manager.last_name) AS manager "
+    query +=
+        "FROM employee INNER JOIN role ON employee.role_id = role.id "
+    query +=
+        "INNER JOIN department ON role.department_id = department.id "
+    query +=
+        "LEFT JOIN employee AS manager ON employee.manager_id = manager.id;"
+    console.log("Selecting all employees...\n");
+    connection.query(query, (err, res) => {
         if (err) throw err;
         console.table(res);
+        start();
+    });
+};
+
+const viewEmpByMgr = () => {
+    let query =
+        "SELECT employee.id, employee.first_name, employee.last_name, role.title, role.salary, department.department_name AS department, concat(manager.first_name, ' ', manager.last_name) AS manager "
+    query +=
+        "FROM employee INNER JOIN role ON employee.role_id = role.id "
+    query +=
+        "INNER JOIN department ON role.department_id = department.id "
+    query +=
+        "INNER JOIN employee as Manager on employee.manager_id = manager.id;"
+    console.log("Selecting all employees by Manager...\n");
+    connection.query(query, (err, res) => {
+        if (err) throw err;
+        // Log all results
+        console.table(res);
+        // re-prompt the user back to the beginning
         start();
     });
 };
@@ -133,7 +165,7 @@ const addDep = () => {
     inquirer
     .prompt([
         { 
-            name: 'name',
+            name: 'departmentName',
             type: 'input',
             message: 'What is the new department called?',
         },
@@ -143,7 +175,7 @@ const addDep = () => {
             connection.query(
             'INSERT INTO department SET ?',
             {
-                name: answer.name,
+                department_name: answer.departmentName,
             },
             (err) => {
                 if (err) throw err;
@@ -155,10 +187,10 @@ const addDep = () => {
     };
 
     const viewDep = () => {
-        console.log('List of all current department. \n')
+        console.log('List of all current departments. \n')
         connection.query('SELECT * FROM department', (err, res) =>{
             if (err) throw err;
-            console.log(res);
+            console.log(res); //Make console.table?
             start();
         });
     };
@@ -179,15 +211,10 @@ const addDep = () => {
                 message: 'What is the salary for the new role?',
             },
             {
-                name: 'department',
+                name: 'departmentId',
                 type: 'input',
                 message: `What department is the role in?`,
             },
-            {
-                name: 'id',
-                type: 'input',
-                message: `What is the ID for this role?`,
-            },  
             ])
             .then((answer) => {
                 connection.query(
@@ -195,8 +222,7 @@ const addDep = () => {
                 {
                     title: answer.title,
                     salary: answer.salary,
-                    department_id: answer.department,
-                    id: answer.id
+                    department_id: answer.departmentId,
                 },
                 (err) => {
                     if (err) throw err;
