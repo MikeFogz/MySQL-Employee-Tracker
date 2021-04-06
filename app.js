@@ -64,12 +64,15 @@ const start = () => {
 
         default:
             console.log(`Invalid action: ${answer.trackerAction}`);
-            break;
+            connection.end();
+            process.exit(0);
     }
     });
 };
 
 start();
+
+//---------- Adding & Viewing Employees -------
 
 const addEmp = () => {
     inquirer
@@ -124,6 +127,8 @@ const viewEmp = () => {
     });
 };
 
+//---------- Adding & Viewing Departments -------
+
 const addDep = () => {
     inquirer
     .prompt([
@@ -157,6 +162,8 @@ const addDep = () => {
             start();
         });
     };
+
+//---------- Adding, Viewing, Updating Roles -------
 
     const addRole = () => {
         inquirer
