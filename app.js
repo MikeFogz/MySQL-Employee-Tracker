@@ -190,7 +190,7 @@ const addDep = () => {
         console.log('List of all current departments. \n')
         connection.query('SELECT * FROM department', (err, res) =>{
             if (err) throw err;
-            console.log(res); //Make console.table?
+            console.table(res);
             start();
         });
     };
@@ -234,10 +234,10 @@ const addDep = () => {
         };
 
     const viewRole = () => {
-        console.log('List of all current role. \n')
+        console.log('List of all current roles. \n')
         connection.query('SELECT * FROM role', (err, res) =>{
             if (err) throw err;
-            console.log(res);
+            console.table(res);
             start();
         });
     };
